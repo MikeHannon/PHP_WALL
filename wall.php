@@ -2,14 +2,10 @@
 session_start();
 require_once('new-connection.php');
 $query = "SELECT first_name, last_name from users where id = ".$_SESSION['user_id']."";
-echo $query;
-die('my query');
 $user = fetch_record($query);
 
-var_dump($user);
-die('user');
 
-$query = "select message, users.first_name, users.last_name, messages.created_at from messages left join users on users.id = messages.user_id";
+$query = "select messages.id, message, users.first_name, users.last_name, messages.created_at from messages left join users on users.id = messages.user_id";
 $messages = fetch_all($query);
 
 $query = "select comment, users.first_name, users.last_name, comments.created_at, comments.message_id from comments left join users on users.id = comments.user_id";
@@ -34,10 +30,10 @@ $comments = fetch_all($query);
         <p><?= $messages[$i]['message'] ?> ||  <span>created by:  <?= $messages[$i]['first_name'] ?> <?= $messages[$i]['last_name'] ?> </span> </p>
         <p> <?= $messages[$i]['created_at'] ?> </p>
         <?php
-        for ($j=0; $j < $comments; $j++) {
+        for ($j=0; $j < count($comments); $j++) {
           if ($comments[$j]['message_id'] == $messages[$i]['id']){
             ?>
-              <p><?= $comments[$j]['message'] ?> ||  <span>created by:  <?= $comments[$j]['first_name'] ?> <?= $comments[$j]['last_name'] ?> </span> </p>
+              <p><?= $comments[$j]['comment'] ?> ||  <span>created by:  <?= $comments[$j]['first_name'] ?> <?= $comments[$j]['last_name'] ?> </span> </p>
               <p> <?= $comments[$j]['created_at'] ?> </p>
               <?php
           }

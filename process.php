@@ -26,14 +26,12 @@ function login($post_data){
 
   $user = fetch_record($query);
   if(strlen($user['password'])>0){
-    if (!password_verify($post_data['password'], $user['password'])){
+    if (!$user || !password_verify($post_data['password'], $user['password'])){
       $_SESSION['errors']['login'] = "Email and/or password is invalid";
       header("Location:login_reg.php");
       exit();
     }
   }
-  var_dump ($user);
-  die('in login');
   $_SESSION['user_id'] = $user['id'];
   header("Location:wall.php");
 }
